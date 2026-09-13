@@ -1,32 +1,30 @@
-//
-//  SpiderSenseApp.swift
-//  SpiderSense
-//
-//  Created by Gamana Sathvika on 13/09/26.
-//
-
 import SwiftUI
-import SwiftData
 
 @main
 struct SpiderSenseApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    init() {
+        ReminderManager.shared.start()
+    }
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+
+        MenuBarExtra("SpiderSense", systemImage: "spider") {
+
+            Text("🕷️ SpiderSense")
+                .font(.headline)
+
+            Divider()
+
+            Button("Test Spider-Sense") {
+                ReminderWindowController.shared.showReminder()
+            }
+
+            Divider()
+
+            Button("Quit SpiderSense") {
+                NSApplication.shared.terminate(nil)
+            }
         }
-        .modelContainer(sharedModelContainer)
     }
 }
